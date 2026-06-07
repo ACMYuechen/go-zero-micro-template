@@ -7,7 +7,6 @@
 | 模块 | 路径 | 说明 | 认证 |
 |------|------|------|------|
 | health | `/api/health` | 健康检查 | 公开 |
-| upload | `/api/upload` | 文件上传（代理到 upload-rpc） | JWT |
 
 ## 新增模块步骤
 
@@ -31,7 +30,4 @@ Redis:
 AuthRpc:
   Endpoints:
     - 127.0.0.1:10003
-UploadRpc:
-  Endpoints:
-    - 127.0.0.1:10004
 ```

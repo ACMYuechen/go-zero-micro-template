@@ -39,12 +39,6 @@ echo "  → admin (port 10001)"
 (cd cmd/admin && nohup go run . > ../../$LOG_DIR/admin.log 2>&1 &)
 echo $! > $PID_DIR/admin.pid
 
-sleep 2
-
-echo "  → upload-rpc (port 10004)"
-(cd services/rpc/upload && nohup go run . > ../../../$LOG_DIR/upload.log 2>&1 &)
-echo $! > $PID_DIR/upload.pid
-
 echo ""
 echo "✅ 所有服务已启动"
 echo ""
@@ -52,6 +46,5 @@ echo "查看日志:"
 echo "  tail -f logs/auth-rpc.log   # auth RPC + gateway"
 echo "  tail -f logs/app.log        # app 服务"
 echo "  tail -f logs/admin.log      # admin 服务"
-echo "  tail -f logs/upload.log     # upload RPC"
 echo ""
 echo "停止服务: make dev-stop"

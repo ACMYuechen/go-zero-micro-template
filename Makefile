@@ -4,9 +4,6 @@ adminDesc = $(adminPWD)/desc
 appPWD = cmd/app
 appDesc = $(appPWD)/desc
 
-uploadPWD = services/rpc/upload
-uploadDesc = $(uploadPWD)/desc
-
 authRpcPWD = services/rpc/auth
 authRpcDesc = $(authRpcPWD)/desc
 
@@ -42,10 +39,6 @@ api-all:
 	@mkdir -p docs
 	@goctl api swagger -filename app-api -api $(appDesc)/app.api -dir ./docs
 	@rm -f $(appPWD)/app.go $(appPWD)/etc/app.yaml
-	@echo "生成 upload RPC..."
-	@goctl api format --dir $(uploadDesc)
-	@goctl rpc protoc $(uploadDesc)/upload.proto --go_out=$(uploadPWD) --go-grpc_out=$(uploadPWD) --zrpc_out=$(uploadPWD) --style=go_zero
-	@rm -f $(uploadPWD)/upload.go $(uploadPWD)/etc/upload.yaml
 	@echo "生成 auth RPC..."
 	@goctl api format --dir $(authRpcDesc)
 	@goctl rpc protoc $(authRpcDesc)/auth.proto --go_out=$(authRpcPWD) --go-grpc_out=$(authRpcPWD) --zrpc_out=$(authRpcPWD) --style=go_zero -m -I . -I $(authRpcDesc)

@@ -81,7 +81,6 @@ services:
       - REDIS_ADDRESS=redis:6379
       - REDIS_PASSWORD=12345678
       - AUTHRPC_ENDPOINT=auth-rpc:10003
-      - UPLOADRPC_ENDPOINT=upload-rpc:10004
     ports:
       - "10002:10002"
     depends_on:
@@ -90,8 +89,6 @@ services:
       redis:
         condition: service_healthy
       auth-rpc:
-        condition: service_started
-      upload-rpc:
         condition: service_started
     networks:
       - gomicrox-network
@@ -118,26 +115,6 @@ services:
         condition: service_healthy
       auth-rpc:
         condition: service_started
-    networks:
-      - gomicrox-network
-    restart: unless-stopped
-
-  # Upload RPC 服务（gRPC，port 10004）
-  upload-rpc:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        SERVICE_PATH: ./services/rpc/upload
-        PORT: 10004
-    container_name: gomicrox-upload-rpc
-    environment:
-      - DATABASE_DSN=host=postgres user=root password=123456 dbname=gomicrox port=5432 sslmode=disable TimeZone=Asia/Shanghai
-    ports:
-      - "10004:10004"
-    depends_on:
-      postgres:
-        condition: service_healthy
     networks:
       - gomicrox-network
     restart: unless-stopped

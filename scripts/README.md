@@ -19,7 +19,6 @@ dev.sh 按以下顺序串行启动：
 2. auth-rpc (port 10003)              # 先启动，创建数据表
 3. app (port 10002)                    # 依赖 auth-rpc
 4. admin (port 10001)                  # 依赖 auth-rpc
-5. upload-rpc (port 10004)            # 相对独立
 ```
 
 > **串行原因**: auth-rpc 先创建表，确保其他服务启动时表已就绪。
@@ -30,8 +29,7 @@ dev.sh 按以下顺序串行启动：
 .pids/
 ├── auth-rpc.pid    # 进程 PID 文件
 ├── app.pid
-├── admin.pid
-└── upload-rpc.pid
+└── admin.pid
 ```
 
 `dev-stop.sh` 读取 `.pids/*.pid` 文件来停止对应进程。
@@ -42,8 +40,7 @@ dev.sh 按以下顺序串行启动：
 logs/
 ├── auth-rpc.log
 ├── app.log
-├── admin.log
-└── upload.log
+└── admin.log
 ```
 
 查看实时日志：

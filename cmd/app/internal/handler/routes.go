@@ -6,7 +6,6 @@ import (
 	"net/http"
 
 	health "gomicrox/cmd/app/internal/handler/health"
-	upload "gomicrox/cmd/app/internal/handler/upload"
 	"gomicrox/cmd/app/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
@@ -22,21 +21,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: health.HealthHandler(serverCtx),
 			},
 		},
-		rest.WithPrefix("/api"),
-	)
-
-	server.AddRoutes(
-		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.AuthMiddleware},
-			[]rest.Route{
-				{
-					// 上传文件
-					Method:  http.MethodPost,
-					Path:    "/upload",
-					Handler: upload.UploadHandler(serverCtx),
-				},
-			}...,
-		),
 		rest.WithPrefix("/api"),
 	)
 }

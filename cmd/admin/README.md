@@ -15,8 +15,8 @@
 |------|---------|-----------|
 | 面向用户 | 客户端用户 | 运营管理员 |
 | 认证中间件 | `AuthMiddleware`（仅校验 Token） | `AuthMiddleware`（校验 Token + AdminRole） |
-| 依赖的 RPC | auth-rpc, upload-rpc | auth-rpc |
-| 典型功能 | 上传、个人资料 | 用户列表、数据统计 |
+| 依赖的 RPC | auth-rpc | auth-rpc |
+| 典型功能 | 个人资料 | 用户列表、数据统计 |
 
 ## Admin 权限校验
 

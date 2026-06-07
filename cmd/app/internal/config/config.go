@@ -10,10 +10,9 @@ import (
 
 type Config struct {
 	rest.RestConf
-	Redis redis.Config       `json:"redis"`
-	Auth  auth.Config        `json:"auth"`
+	Redis redis.Config `json:"redis"`
+	Auth  auth.Config  `json:"auth"`
 
 	// rpc 配置
-	UploadRpc zrpc.RpcClientConf `json:"uploadRpc"`
-	AuthRpc   zrpc.RpcClientConf `json:"authRpc"`
+	AuthRpc zrpc.RpcClientConf `json:"authRpc"`
 }

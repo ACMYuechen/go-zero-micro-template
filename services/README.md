@@ -7,8 +7,7 @@ services/ 是独立的业务服务部署单元，通过 gRPC 协议对外提供�
 ```
 services/
 └── rpc/
-    ├── auth/                     # 认证中心
-    └── upload/                   # 文件上传
+    └── auth/                     # 认证中心
 ```
 
 ## 为什么用 RPC？
