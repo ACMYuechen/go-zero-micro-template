@@ -63,10 +63,12 @@
 # 1. 下载依赖
 go mod download
 
-# 2. 启动服务 + Docker 基础设施
+# 2. 密钥配备, 參考 docs/SECRETS.md
+
+# 3. 启动服务 + Docker 基础设施
 make dev
 
-# 3. 验证
+# 4. 验证
 make smoke-test
 ```
 
