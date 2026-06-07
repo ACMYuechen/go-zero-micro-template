@@ -28,7 +28,7 @@ func NewUpdateUserStatusLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 }
 
 func (l *UpdateUserStatusLogic) UpdateUserStatus(req *types.UpdateUserStatusReq) (resp *types.UpdateUserStatusResp, err error) {
-	_, err = l.svcCtx.AuthRpc.UpdateUserStatus(l.ctx, &pb.UpdateUserStatusReq{
+	_, err = l.svcCtx.UserClient.UpdateUserStatus(l.ctx, &pb.UpdateUserStatusReq{
 		UserId: req.UserId,
 		Status: int32(req.Status),
 	})

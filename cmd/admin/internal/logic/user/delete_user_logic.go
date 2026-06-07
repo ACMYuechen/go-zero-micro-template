@@ -28,7 +28,7 @@ func NewDeleteUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Delete
 }
 
 func (l *DeleteUserLogic) DeleteUser(req *types.DeleteUserReq) (resp *types.DeleteUserResp, err error) {
-	_, err = l.svcCtx.AuthRpc.DeleteUser(l.ctx, &pb.DeleteUserReq{UserId: req.UserId})
+	_, err = l.svcCtx.UserClient.DeleteUser(l.ctx, &pb.DeleteUserReq{UserId: req.UserId})
 	if err != nil {
 		l.Logger.Errorf("failed to delete user via auth-rpc: %v, error: %v", req.UserId, err)
 		return nil, errors.ErrDatabase

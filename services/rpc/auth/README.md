@@ -35,7 +35,7 @@
 auth-rpc 同时暴露 gRPC 和 HTTP 接口：
 
 - **gRPC**: 供内部服务（cmd/app, cmd/admin）通过 `AuthRpc` 客户端调用
-- **HTTP Gateway**: 前端/移动端可直接访问，无需经过 app Gateway
+- **HTTP Gateway**: 测试时可直接访问，无需额外写客户端调用 gRPC
 
 ```go
 // main.go 中同时启动 RPC 和 Gateway
@@ -45,13 +45,6 @@ sg.Add(s)
 gw := gateway.MustNewServer(...) // HTTP Gateway
 sg.Add(gw)
 ```
-
-## 数据模型
-
-| 表 | model | 说明 |
-|----|-------|------|
-| users | `services/rpc/auth/model/user/` | 用户账号（id, username, email, password, role, status） |
-| user_profiles | `services/rpc/auth/model/user_profile/` | 用户扩展资料 |
 
 ## 认证流程
 

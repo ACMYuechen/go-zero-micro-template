@@ -1,2 +1,2 @@
-// Code scaffolded by goctl. Safe to edit.
+// Code scaffolded by goctl. Only init once, Safe to edit.
 // gorm

@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"gomicrox/services/rpc/auth/auth"
+	"gomicrox/services/rpc/auth/client/authservice"
 	"gomicrox/services/rpc/auth/pb"
 
 	"github.com/zeromicro/go-zero/core/logx"
@@ -15,10 +15,10 @@ import (
 const AdminRoleThreshold = 900
 
 type AuthMiddleware struct {
-	authRpc auth.Auth
+	authRpc authservice.AuthService
 }
 
-func NewAuthMiddleware(authRpc auth.Auth) *AuthMiddleware {
+func NewAuthMiddleware(authRpc authservice.AuthService) *AuthMiddleware {
 	return &AuthMiddleware{authRpc: authRpc}
 }
 

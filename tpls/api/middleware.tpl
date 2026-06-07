@@ -1,4 +1,4 @@
-// Code scaffolded by goctl. Safe to edit.
+// Code scaffolded by goctl. Not to edit.
 
 package middleware
 

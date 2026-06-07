@@ -28,7 +28,7 @@ func NewUserListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserList
 }
 
 func (l *UserListLogic) UserList(req *types.UserListReq) (resp *types.UserListResp, err error) {
-	rpcResp, err := l.svcCtx.AuthRpc.ListUsers(l.ctx, &pb.ListUsersReq{
+	rpcResp, err := l.svcCtx.UserClient.ListUsers(l.ctx, &pb.ListUsersReq{
 		Page:     int32(req.Page),
 		PageSize: int32(req.PageSize),
 		Status:   int32(req.Status),

@@ -15,7 +15,6 @@ help:
 	@echo "常用命令:"
 	@echo "  make dev            一键启动全部服务（本地 go run + Docker 基础设施）"
 	@echo "  make dev-stop       一键停止全部本地服务"
-	@echo "  make smoke-test     冒烟测试（验证服务/DB/Redis 连通性）"
 	@echo "  make docker-up      docker-compose 启动全部服务"
 	@echo "  make docker-down    docker-compose 停止"
 	@echo "  make api-all        生成所有服务的代码"

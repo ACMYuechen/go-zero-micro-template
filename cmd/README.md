@@ -2,7 +2,7 @@
 
 REST API Gateway 是外部流量的统一入口，负责 HTTP 请求处理、认证校验、参数校验、请求转发等。
 
-**设计原则**: Gateway 层**不直连数据库**，所有数据操作通过 RPC 调用下游服务。
+**设计原则**: Gateway 层理论上所有数据操作通过 RPC 调用下游服务, 紧急/复杂/demo业务不适合立即拆分时, 先落地共享 model 层，后续再拆分到具体微服务中。
 
 ## 目录结构
 
@@ -39,21 +39,12 @@ cmd/
 
 ## 开发规范
 
-### 1. 新增模块
+### 新增模块步骤
 
-```bash
-# Step 1: 在 desc/ 下创建模块目录和 .api 文件
-mkdir cmd/app/desc/<module>
-# 编写 <module>.api 定义请求/响应结构体和路由
-
-# Step 2: 在 desc/app.api 中 import 新模块
-goctl api format --dir cmd/app/desc
-
-# Step 3: 生成代码
-make api-all
-
-# Step 4: 在 internal/logic/<module>/ 下编写业务逻辑
-```
+1. 在 `desc/` 下创建 `<module>/<module>.api`
+2. 在 `desc/app.api` 中 `import` 并添加 `service` 块
+3. 运行 `make api-all` 生成代码
+4. 在 `internal/logic/<module>/` 下编写业务逻辑
 
 ### 2. 目录职责
 
@@ -84,7 +75,7 @@ import (
     tags:   <module>
     middleware: AuthMiddleware    // 需要认证时声明
 )
-service app {
+service app/admin {
     @doc "接口说明"
     @handler HandlerName          // handler 名称
     get|post|put|delete /path (Req) returns (Resp)
@@ -98,7 +89,7 @@ func main() {
     // 1. 加载配置
     conf.MustLoad(*configFile, &c, conf.UseEnv())
 
-    // 2. 初始化 Redis（Gateway 层不连数据库）
+    // 2. 初始化 Redis（Gateway 层非特殊情况(存在共享层model)不连数据库）
     rds, err := redis.NewRedisDB(c.Redis)
 
     // 3. 创建 ServiceContext（注入 RPC 客户端）
@@ -111,7 +102,3 @@ func main() {
     sg.Start()
 }
 ```
-
-> **原则**:
-> - Gateway 层**不持有数据库连接**，所有数据操作走 RPC
-> - 只做请求处理、参数校验、协议转换，复杂业务逻辑下沉到 RPC 服务

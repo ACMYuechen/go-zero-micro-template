@@ -5,7 +5,8 @@ package svc
 import (
 	"gomicrox/cmd/admin/internal/config"
 	"gomicrox/cmd/admin/internal/middleware"
-	"gomicrox/services/rpc/auth/auth"
+	"gomicrox/services/rpc/auth/client/authservice"
+	"gomicrox/services/rpc/auth/client/userservice"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/zeromicro/go-zero/rest"
@@ -16,8 +17,9 @@ type ServiceContext struct {
 	Config    config.Config
 	Validator *validator.Validate
 
-	// RPC 客户端（所有数据操作通过 auth-rpc，admin 不直接访问 DB）
-	AuthRpc auth.Auth
+	// RPC 客户端
+	AuthClient authservice.AuthService
+	UserClient userservice.UserService
 
 	// 中间件配置
 	AuthMiddleware rest.Middleware
@@ -26,12 +28,18 @@ type ServiceContext struct {
 func NewServiceContext(c config.Config) *ServiceContext {
 	valid := validator.New(validator.WithRequiredStructEnabled())
 
-	authRpc := auth.NewAuth(zrpc.MustNewClient(c.AuthRpc))
+	authclient := authservice.NewAuthService(zrpc.MustNewClient(c.AuthRpc))
+	userclient := userservice.NewUserService(zrpc.MustNewClient(c.AuthRpc))
 
 	return &ServiceContext{
-		Config:         c,
-		Validator:      valid,
-		AuthRpc:        authRpc,
-		AuthMiddleware: middleware.NewAuthMiddleware(authRpc).Handle,
+		Config:    c,
+		Validator: valid,
+
+		// RPC 客户端
+		AuthClient: authclient,
+		UserClient: userclient,
+
+		// 中间件配置
+		AuthMiddleware: middleware.NewAuthMiddleware(authclient).Handle,
 	}
 }

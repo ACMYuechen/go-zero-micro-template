@@ -2,14 +2,6 @@
 
 services/ 是独立的业务服务部署单元，通过 gRPC 协议对外提供服务。每个服务可以独立部署、独立扩缩容。
 
-## 目录结构
-
-```
-services/
-└── rpc/
-    └── auth/                     # 认证中心
-```
-
 ## 为什么用 RPC？
 
 | 场景 | 处理方式 |
@@ -39,10 +31,14 @@ services/rpc/<service>/
 │   │       └── xxx_server.go     # gRPC server 实现（goctl 生成）
 │   └── svc/
 │       └── service_context.go    # DI 容器
+├── model/                        # 业务数据表
 ├── pb/                           # 生成的 protobuf Go 代码（不要编辑）
 ├── main.go                       # 服务入口
-└── <service>/                    # RPC 客户端包装（goctl 生成）
-    └── <service>.go
+└── client/                       # RPC 客户端包装（goctl 生成）
+    ├── <Aservice>/
+    │   └── A_service.go
+    └── <Bservice>/
+        └── B_service.go
 ```
 
 ## 新增 RPC 服务步骤

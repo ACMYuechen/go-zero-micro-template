@@ -5,7 +5,8 @@ package svc
 import (
 	"gomicrox/cmd/app/internal/config"
 	"gomicrox/cmd/app/internal/middleware"
-	"gomicrox/services/rpc/auth/auth"
+	"gomicrox/services/rpc/auth/client/authservice"
+	"gomicrox/services/rpc/auth/client/userservice"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/redis/go-redis/v9"
@@ -19,7 +20,8 @@ type ServiceContext struct {
 	Redis     redis.UniversalClient
 
 	// RPC 客户端
-	AuthRpc auth.Auth
+	AuthClient authservice.AuthService
+	UserClient userservice.UserService
 
 	// 中间件配置
 	AuthMiddleware rest.Middleware
@@ -28,13 +30,19 @@ type ServiceContext struct {
 func NewServiceContext(c config.Config, redisClient redis.UniversalClient) *ServiceContext {
 	valid := validator.New(validator.WithRequiredStructEnabled())
 
+	authclient := authservice.NewAuthService(zrpc.MustNewClient(c.AuthRpc))
+	userclient := userservice.NewUserService(zrpc.MustNewClient(c.AuthRpc))
+
 	return &ServiceContext{
 		Config:    c,
 		Validator: valid,
 		Redis:     redisClient,
 
-		AuthRpc: auth.NewAuth(zrpc.MustNewClient(c.AuthRpc)),
+		// RPC 客户端
+		AuthClient: authclient,
+		UserClient: userclient,
 
-		AuthMiddleware: middleware.NewAuthMiddleware(auth.NewAuth(zrpc.MustNewClient(c.AuthRpc))).Handle,
+		// 中间件配置
+		AuthMiddleware: middleware.NewAuthMiddleware(authclient).Handle,
 	}
 }
