@@ -1,0 +1,30 @@
+syntax = "v1"
+
+import (
+	"upload/upload.api"
+)
+
+//////////////////////////////// 健康检查 /////////////////////////////////////////////////////
+@server (
+	prefix: /api
+	group:  health
+	tags:   health
+)
+service app {
+	@doc "健康检查"
+	@handler Health
+	get /health
+}
+
+//////////////////////////////// 上传接口 /////////////////////////////////////////////////////
+@server (
+	prefix: /api
+	group:  upload
+	tags:   upload
+	middleware: AuthMiddleware
+)
+service app {
+	@doc "上传文件"
+	@handler Upload
+	post /upload (UploadReq) returns (UploadResp)
+}
